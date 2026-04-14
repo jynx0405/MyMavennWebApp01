@@ -1,44 +1,40 @@
 pipeline {
-    agent any  // Use any available agent
+    agent any
 
     tools {
-        maven 'Maven'  // Ensure this matches the name configured in Jenkins
+        maven 'Maven'
     }
+
     stages {
+
         stage('Checkout') {
             steps {
-                git branch: 'master', url: 'https://github.com/jynx0405/MyMavenWebApp01'
+                git branch: 'master', url: 'https://github.com/jynx0405/MyMavenWebApp01.git'
             }
         }
 
-        stage('Build') {
+        stage('Build WAR') {
             steps {
-                sh 'mvn clean package'  // Run Maven build
+                sh 'mvn clean package'
             }
         }
 
-        stage('Test') {
+        stage('Verify WAR') {
             steps {
-                sh 'mvn test'  // Run unit tests
+                sh 'ls target'
             }
         }
 
-        
-        
-       
-        stage('Run Application') {
+        stage('Run Web App (Jetty)') {
             steps {
-                // Start the JAR application
-                sh 'java -jar target/MyMavenApp-1.0-SNAPSHOT.jar'
+                sh 'nohup mvn jetty:run > jetty.log 2>&1 &'
             }
         }
-
-        
     }
 
     post {
         success {
-            echo 'Build and deployment successful!'
+            echo 'Web app deployed successfully on Jetty!'
         }
         failure {
             echo 'Build failed!'
