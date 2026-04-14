@@ -22,7 +22,21 @@
         </dependency>
   </dependencies>
   <build>
+  <properties>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+</properties>
   <plugins>
+  <plugin>
+    <groupId>org.eclipse.jetty</groupId>
+    <artifactId>jetty-maven-plugin</artifactId>
+    <version>9.4.51.v20230217</version>
+    <configuration>
+        <httpConnector>
+            <port>9090</port>
+        </httpConnector>
+    </configuration>
+</plugin>
   <plugin>
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-war-plugin</artifactId>
